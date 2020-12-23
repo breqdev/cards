@@ -26,7 +26,21 @@
         color: #FFF;
     }
     .text-container {
-        margin-left: 10px;
+        margin: 15px;
+    }
+    .small-print {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        color: #FFF;
+        margin: 5px;
+        font-family: 'Lato', sans-serif;
+    }
+    h1 {
+        font-family: 'Ubuntu', sans-serif;
+    }
+    p {
+        font-family: 'Lato', sans-serif;
     }
 </style>
 <div class="card">
@@ -38,6 +52,9 @@
             <h1>{{ name }}</h1>
             <p>{{ bio }}</p>
         </div>
+    </div>
+    <div class="small-print">
+        <span class="small">cards, made with <i class="fas fa-heart"></i> by <a href="https://breq.dev/">breq</a></span>
     </div>
 </div>
 {% endblock %}

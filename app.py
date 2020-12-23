@@ -28,7 +28,7 @@ def index():
     return redirect("https://breq.dev/apps/cards/")
 
 
-@app.route("/card", methods=["POST"])
+@app.route("/card")
 @cross_origin()
 def card():
     format = request.args.get("format")
@@ -40,7 +40,7 @@ def card():
 
     if format == "html":
         args = {name: markdown(value)
-                for name, value in request.form.items()}
+                for name, value in request.args.items()}
         return render_template(template, **args)
     else:
         return abort(400)
