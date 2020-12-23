@@ -1,3 +1,4 @@
+import os
 import re
 
 from flask import Flask, request, redirect, render_template, abort, Markup
@@ -27,15 +28,20 @@ def index():
     return redirect("https://breq.dev/apps/cards/")
 
 
-@app.route("/card/<string:template_name>", methods=["POST"])
+@app.route("/card", methods=["POST"])
 @cross_origin()
-def card(template_name):
+def card():
     format = request.args.get("format")
+    template_name = request.args.get("template")
+
+    if not os.path.exists(f"templates/cards/{template_name}.html"):
+        return abort(404)
+    template = f"cards/{template_name}.html"
 
     if format == "html":
         args = {name: markdown(value)
                 for name, value in request.form.items()}
-        return render_template("basic.html", **args)
+        return render_template(template, **args)
     else:
         return abort(400)
 
