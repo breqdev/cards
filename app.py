@@ -1,12 +1,16 @@
 import os
 import re
+import asyncio
 
-from flask import Flask, request, redirect, render_template, abort, Markup
-from flask_cors import CORS, cross_origin
+from quart import (Quart, request, redirect, render_template, abort, Markup,
+                   Response)
+from quart_cors import cors, route_cors
+
+from pyppeteer import launch
 
 
-app = Flask(__name__)
-CORS(app)
+app = Quart(__name__)
+app = cors(app)
 
 
 def markdown(text):
@@ -23,14 +27,25 @@ def markdown(text):
     return Markup(text)
 
 
+async def screenshot(html, type="png"):
+    browser = await launch()
+    page = await browser.newPage()
+    await page.setViewport({"width": 500, "height": 300})
+    await page.setContent(html)
+    await asyncio.sleep(1)
+    image = await page.screenshot(type=type, omitBackground=True)
+    await browser.close()
+    return image
+
+
 @app.route("/")
-def index():
+async def index():
     return redirect("https://breq.dev/apps/cards/")
 
 
 @app.route("/card")
-@cross_origin()
-def card():
+@route_cors(allow_origin="*")
+async def card():
     format = request.args.get("format")
     template_name = request.args.get("template")
 
@@ -38,10 +53,19 @@ def card():
         return abort(404)
     template = f"cards/{template_name}.html"
 
+    args = {name: markdown(value)
+            for name, value in request.args.items()}
+
     if format == "html":
-        args = {name: markdown(value)
-                for name, value in request.args.items()}
-        return render_template(template, **args)
+        return await render_template(template, **args)
+    elif format == "png":
+        html = await render_template(template, no_rounding=True, **args)
+        image = await screenshot(html, "png")
+        return Response(image, mimetype="image/png")
+    elif format in ["jpg", "jpeg"]:
+        html = await render_template(template, no_rounding=True, **args)
+        image = await screenshot(html, "jpeg")
+        return Response(image, mimetype="image/jpeg")
     else:
         return abort(400)
 
