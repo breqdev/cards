@@ -2,8 +2,13 @@
 <html>
 <head>
     <title>Card | rendered with ❤️ by cards.breq.dev</title>
+    <!-- Layout by Twitter Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Emoji by Twitter Twemoji -->
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <!-- Icons by Font Awesome -->
     <script src="https://kit.fontawesome.com/69d45d8e8c.js" crossorigin="anonymous"></script>
+    <!-- Fonts hosted by Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato&amp;display=swap" rel="stylesheet">
     <style>
@@ -29,7 +34,18 @@
             border-radius: 15px;
             background-color: inherit;
         }
+        img.emoji {
+           height: 1em;
+           width: 1em;
+           margin: 0 .05em 0 .1em;
+           vertical-align: -0.1em;
+        }
     </style>
+    <script>
+        window.onload = function() {
+            twemoji.parse(document.body);
+        }
+    </script>
 </head>
 <body>
     <div class="centering-parent">
