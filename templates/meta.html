@@ -12,12 +12,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato&amp;display=swap" rel="stylesheet">
     <style>
-        html {
+        html, body {
             height: 100%;
         }
         body {
             background-color: #525252;
-            height: 100%;
         }
         .centering-parent {
             height: 100%;
@@ -31,9 +30,17 @@
             width: 500px;
             overflow: hidden;
             border-style: none;
-            border-radius: 15px;
             background-color: inherit;
         }
+        {% if no_rounding %}
+        .card {
+            border-radius: 0;
+        }
+        {% else %}
+        .card {
+            border-radius: 15px;
+        }
+        {% endif %}
         img.emoji {
            height: 1em;
            width: 1em;
@@ -41,15 +48,13 @@
            vertical-align: -0.1em;
         }
     </style>
-    <script>
-        window.onload = function() {
-            twemoji.parse(document.body);
-        }
-    </script>
 </head>
 <body>
     <div class="centering-parent">
         {% block card %}
         {% endblock %}
     </div>
+    <script>
+        twemoji.parse(document.body);
+    </script>
 </body>
