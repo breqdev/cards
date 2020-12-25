@@ -63,11 +63,11 @@ async def card():
     if format == "html":
         return await render_template(template, **args)
     elif format == "png":
-        html = await render_template(template, no_rounding=True, **args)
+        html = await render_template(template, **args)
         image = await screenshot(html, type="png")
         return Response(image, mimetype="image/png")
     elif format in ["jpg", "jpeg"]:
-        html = await render_template(template, no_rounding=True, **args)
+        html = await render_template(template, **args)
         image = await screenshot(html, type="jpeg", quality=100)
         return Response(image, mimetype="image/jpeg")
     else:
