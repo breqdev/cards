@@ -1,5 +1,6 @@
 import os
 import re
+import asyncio
 
 from quart import (Quart, request, redirect, render_template, abort, Markup,
                    Response)
@@ -33,7 +34,9 @@ async def screenshot(html, **options):
     page = await browser.newPage()
     await page.setViewport({"width": 500, "height": 300})
     await page.setContent(html)
-    await page.waitForFunction("document.readyState === 'complete'")
+    await page.waitFor("*")
+    await page.waitForFunction("isReady()")
+    await asyncio.sleep(0.1)  # Font Awesome takes longer to load in
     image = await page.screenshot(**options)
     await browser.close()
     return image

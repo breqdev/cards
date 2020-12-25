@@ -2,6 +2,11 @@
 <html>
 <head>
     <title>Card | rendered with ❤️ by cards.breq.dev</title>
+    <script>
+    function isReady() {
+        return false;
+    }
+    </script>
     <!-- Layout by Twitter Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- Emoji by Twitter Twemoji -->
@@ -56,5 +61,21 @@
     </div>
     <script>
         twemoji.parse(document.body);
+
+        function isReady() {
+            let span = document.createElement('span');
+
+            span.className = "fas";
+            span.style.display = "none";
+            document.body.appendChild(span);
+
+            font_family = window.getComputedStyle(span, null).getPropertyValue("font-family");
+
+            if (font_family.startsWith("Font Awesome")) {
+                return false;
+            }
+
+            return document.readyState === 'complete';
+        }
     </script>
 </body>
