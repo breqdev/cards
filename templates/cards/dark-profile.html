@@ -1,0 +1,81 @@
+{% extends "meta.html" %}
+{% block card %}
+<style>
+    .image-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+    }
+    .image-header img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+    .image-avatar {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        width: 100px;
+        height: 100px;
+    }
+    .image-avatar img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+    .avatar-crop {
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        border-radius: 50%;
+        border: 2px solid #000;
+    }
+    .text-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background-color: #000;
+        color: #FFF;
+    }
+    .text-container {
+        margin: 15px;
+    }
+    .small-print {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        color: #FFF;
+        margin: 5px;
+        font-family: 'Lato', sans-serif;
+    }
+    h1 {
+        font-family: 'Ubuntu', sans-serif;
+    }
+    p {
+        font-family: 'Lato', sans-serif;
+    }
+</style>
+<div class="card">
+    <div class="image-header">
+        <image src="{{ background }}" />
+    </div>
+    <div class="image-avatar">
+        <div class="avatar-crop">
+            <image src="{{ avatar }}" />
+        </div>
+    </div>
+    <div class="text-footer">
+        <div class="text-container">
+            <h1>{{ name }}</h1>
+            <p>{{ bio }}</p>
+        </div>
+    </div>
+    <div class="small-print">
+        <span class="small">cards, made with <i class="fas fa-heart"></i> by <a href="https://breq.dev/">breq</a></span>
+    </div>
+</div>
+{% endblock %}
