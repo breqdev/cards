@@ -7,6 +7,8 @@ from quart_cors import cors, route_cors
 
 from pyppeteer import launch
 
+CHROME_PATH = os.environ.get('GOOGLE_CHROME_SHIM')
+
 
 app = Quart(__name__)
 app = cors(app)
@@ -27,7 +29,7 @@ def markdown(text):
 
 
 async def screenshot(html, **options):
-    browser = await launch()
+    browser = await launch(executablePath=CHROME_PATH)
     page = await browser.newPage()
     await page.setViewport({"width": 500, "height": 300})
     await page.setContent(html)
