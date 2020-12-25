@@ -1,1 +1,1 @@
-web: gunicorn relay:app
+web: hypercorn relay:app

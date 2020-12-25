@@ -1,6 +1,5 @@
 import os
 import re
-import asyncio
 
 from quart import (Quart, request, redirect, render_template, abort, Markup,
                    Response)
@@ -27,13 +26,13 @@ def markdown(text):
     return Markup(text)
 
 
-async def screenshot(html, type="png"):
+async def screenshot(html, **options):
     browser = await launch()
     page = await browser.newPage()
     await page.setViewport({"width": 500, "height": 300})
     await page.setContent(html)
-    await asyncio.sleep(1)
-    image = await page.screenshot(type=type, omitBackground=True)
+    await page.waitForFunction("document.readyState === 'complete'")
+    image = await page.screenshot(**options)
     await browser.close()
     return image
 
@@ -60,11 +59,11 @@ async def card():
         return await render_template(template, **args)
     elif format == "png":
         html = await render_template(template, no_rounding=True, **args)
-        image = await screenshot(html, "png")
+        image = await screenshot(html, type="png")
         return Response(image, mimetype="image/png")
     elif format in ["jpg", "jpeg"]:
         html = await render_template(template, no_rounding=True, **args)
-        image = await screenshot(html, "jpeg")
+        image = await screenshot(html, type="jpeg", quality=100)
         return Response(image, mimetype="image/jpeg")
     else:
         return abort(400)
