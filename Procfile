@@ -1,1 +1,1 @@
-web: hypercorn relay:app
+web: hypercorn app:app
