@@ -72,22 +72,7 @@ async def card():
 
     html = await render_template(template, **args)
 
-    if request.method == "GET":
-        format = request.args.get("format")
-
-        if format == "html":
-            return html
-        elif format == "png":
-            return Response(
-                await screenshot(html, type="png"), mimetype="image/png")
-        elif format in ["jpg", "jpeg"]:
-            return Response(
-                await screenshot(html, type="jpeg", quality=100),
-                mimetype="image/jpeg")
-        else:
-            return abort(400)
-
-    else:
+    if request.method == "POST":
         async with aiohttp.ClientSession() as session:
             async with session.post("https://snowflake.breq.dev/") as response:
                 card_id = str((await response.json())["snowflake"])
@@ -115,6 +100,20 @@ async def card():
         return jsonify({
             "card_id": card_id
         })
+    else:
+        format = request.args.get("format")
+
+        if format == "html":
+            return html
+        elif format == "png":
+            return Response(
+                await screenshot(html, type="png"), mimetype="image/png")
+        elif format in ["jpg", "jpeg"]:
+            return Response(
+                await screenshot(html, type="jpeg", quality=100),
+                mimetype="image/jpeg")
+        else:
+            return abort(400)
 
 
 @app.route("/card/<string:card_id>.<string:format>")
