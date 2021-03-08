@@ -1,0 +1,23 @@
+.urlOutput {
+    display: flex;
+}
+
+.urlOutputInput {
+    box-sizing: border-box;
+    width: 100%;
+    color: black;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.button {
+    cursor: pointer;
+    background-color: #1BB3FF;
+    border: 1px solid #525252;
+    border-radius: 5px;
+    transition: background-color 0.05s;
+}
+
+.button:active {
+    background-color: #525252;
+}

@@ -1,0 +1,33 @@
+.inputGroup {
+    display: flex;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.label {
+    flex-basis: 20%;
+}
+
+.input {
+    flex-grow: 1;
+}
+
+.buttonGroup {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.button {
+    cursor: pointer;
+    background-color: #1BB3FF;
+    border: 1px solid #525252;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 10px;
+    font-size: 20px;
+    transition: background-color 0.05s;
+}
+
+.button:active {
+    background-color: #525252;
+}
