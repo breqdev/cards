@@ -1,0 +1,14 @@
+.separator {
+    border-left: 2px solid #525252;
+    align-self: stretch;
+    width: 2px;
+    margin: 20px;
+
+    display: none;
+}
+
+@media (min-width: 992px) {
+    .separator {
+        display: block;
+    }
+}

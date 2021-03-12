@@ -1,49 +1,25 @@
 import React from "react"
 
-import styles from "./CardOutput.module.scss"
+import { Input, Button } from "@breq/react-theme"
 
 function URLOutput(props) {
-    const inputStyle = {
-        boxSizing: "border-box",
-        width: "100%",
-        color: "black",
-        textAlign: "center",
-        marginRight: "10px"
-    }
-
     const handleClick = (e) => navigator.clipboard.writeText(props.url)
 
     return (
-        <div className={styles.urlOutput}>
-            <input
-                type="text"
-                value={props.url}
-                className={styles.urlOutputInput}
-                disabled
-            />
-            <button
-                className={styles.button}
-                type="button"
-                onClick={handleClick}
-            >Copy</button>
+        <div style={{display: "flex", width: "100%"}}>
+            <Input style={{flexGrow: 1}} value={props.url} disabled />
+            <Button style={{width: "max-content"}} onClick={handleClick}>Copy</Button>
         </div>
     )
 }
 
 export default function CardOutput(props) {
-    const style = {
-        textAlign: "center",
-        width: "500px",
-        padding: "20px",
-        margin: "auto",
-        border: "2px solid black"
-    }
-
     return (
-        <div style={style}>
+        <div style={{maxWidth: "100%"}}>
             <h1>Rendered Card</h1>
-            <iframe height="300" width="500" title="card" src={props.cardURL} />
-            <br />
+            <div style={{display: "block", overflow: "auto"}}>
+                <iframe height="300" width="500" frameBorder="0" title="card" src={props.cardURL} />
+            </div>
             <URLOutput url={props.cardURL} />
         </div>
     )

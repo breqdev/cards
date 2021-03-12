@@ -37,9 +37,9 @@ export default function TryIt(props) {
     }
 
     return (
-        <div>
+        <div style={{display: "flex", flexWrap: "wrap"}}>
             <Configurator onUpdate={onUpdate} onFreeze={onFreeze} />
-            <hr />
+            <div className="separator"> </div>
             <CardOutput cardURL={cardURL} />
         </div>
     )
