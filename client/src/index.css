@@ -12,3 +12,23 @@
         display: block;
     }
 }
+
+code {
+    word-wrap: break-word;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 2rem auto;
+}
+
+td, th {
+    border: 2px solid #ccc;
+    padding: 0.5rem 1rem;
+    color: black;
+}
+
+iframe, img {
+    display: block;
+    margin: 2rem auto;
+}

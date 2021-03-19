@@ -3,6 +3,7 @@ import { Page, Heading } from "@breq/react-theme"
 import { faGithub, faKeybase } from "@fortawesome/free-brands-svg-icons"
 
 import TryIt from "./TryIt"
+import HelpText from "./HelpText"
 
 const links = {
     github: "https://github.com/breq16/cards"
@@ -33,6 +34,8 @@ export default function App(props) {
         >
             <Heading title="Cards" subtitle="Generate and embed digital cards featuring custom images and text." />
             <TryIt />
+            <hr />
+            <HelpText />
         </Page>
     )
 }
