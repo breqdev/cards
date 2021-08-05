@@ -1,21 +1,34 @@
 import os
 import re
+import io
 import asyncio
 import contextlib
 import aiohttp
+import dotenv
 
-from quart import (Quart, request, redirect, render_template, abort, Markup,
-                   Response, jsonify, send_file)
+from quart import (Quart, request, redirect, render_template, abort, Response, jsonify)
+from markupsafe import Markup
 from quart_cors import cors, route_cors
+
+from minio import Minio
 
 from pyppeteer import launch
 
+dotenv.load_dotenv()
+
 CHROME_PATH = os.environ.get('GOOGLE_CHROME_SHIM')
-STORAGE_PATH = os.environ.get("STORAGE_PATH") or "./storage"
+MINIO_ENDPOINT = os.environ.get("MINIO_ENDPOINT")
 
 
 app = Quart(__name__)
 app = cors(app)
+
+
+minio = Minio(
+    MINIO_ENDPOINT,
+    access_key=os.environ.get("MINIO_ACCESS_KEY"),
+    secret_key=os.environ.get("MINIO_SECRET_KEY"),
+)
 
 
 def markdown(text):
@@ -77,25 +90,21 @@ async def card():
             async with session.post("https://snowflake.breq.dev/") as response:
                 card_id = str((await response.json())["snowflake"])
 
-        os.mkdir(os.path.join(STORAGE_PATH, card_id))
-
-        with open(os.path.join(STORAGE_PATH, card_id, "card.html"), "w") as f:
-            f.write(html)
+        minio.put_object(
+            "cards",
+            f"{card_id}.html",
+            io.BytesIO(html.encode("utf-8")),
+            len(html)
+        )
 
         async with open_html(html) as page:
-            await page.screenshot(
-                {
-                    "type": "png",
-                    "path": os.path.join(STORAGE_PATH, card_id, "card.png")
-                }
-            )
-            await page.screenshot(
-                {
-                    "type": "jpeg",
-                    "quality": 100,
-                    "path": os.path.join(STORAGE_PATH, card_id, "card.jpeg")
-                }
-            )
+            png = await page.screenshot({"type": "png"})
+            minio.put_object(
+                "cards", f"{card_id}.png", io.BytesIO(png), len(png))
+
+            jpeg = await page.screenshot({"type": "jpeg", "quality": 100})
+            minio.put_object(
+                "cards", f"{card_id}.jpeg", io.BytesIO(jpeg), len(jpeg))
 
         return jsonify({
             "card_id": card_id
@@ -122,8 +131,12 @@ async def card_by_id(card_id, format):
         format = "jpeg"
     if format not in ["html", "png", "jpeg"]:
         return abort(404)
-    return await send_file(
-        os.path.join(STORAGE_PATH, card_id, f"card.{format}"))
+    return Response(
+        minio.get_object("cards", f"{card_id}.{format}").read(),
+        mimetype=(
+            "image/" + format if format in ["png", "jpeg"] else "text/html"
+        )
+    )
 
 
 if __name__ == "__main__":
