@@ -21,6 +21,7 @@ multidict==5.1.0
 priority==2.0.0
 pyee==8.1.0
 pyppeteer==0.2.5
+python-dotenv==0.19.0
 Quart==0.15.1
 Quart-CORS==0.5.0
 toml==0.10.2
