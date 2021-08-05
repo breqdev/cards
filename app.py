@@ -68,7 +68,7 @@ async def screenshot(html, **options):
 
 @app.route("/")
 async def index():
-    return redirect("https://breq.dev/apps/cards/")
+    return redirect("https://cards.breq.dev")
 
 
 @app.route("/card", methods=["GET", "POST"])
