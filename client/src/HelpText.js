@@ -53,7 +53,7 @@ export default function HelpText(props) {
 
             <br />
 
-            <iframe title="HTML card" style={{border: "none"}} height="300" width="500" src="https://cards.api.breq.dev/card/130828421629413919.html" />
+            <iframe title="HTML card" style={{border: "none"}} height="300" width="500" src="https://cards.api.breq.dev/card/219156081436576520.html" />
 
             <p><strong>Otherwise, use images</strong> - Use a basic <code>{'<img>'}</code> tag, or markdown.</p>
 
@@ -69,7 +69,7 @@ export default function HelpText(props) {
 
             <p>Add a `border-radius: 15px` to the IFrame for some nice, rounded corners:</p>
 
-            <iframe title="Rounded edges card" style={{border: "none", borderRadius: "15px"}} height="300" width="500" src="https://cards.api.breq.dev/card/130828825331173922.html" />
+            <iframe title="Rounded edges card" style={{border: "none", borderRadius: "15px"}} height="300" width="500" src="https://cards.api.breq.dev/card/219156300446354185.html" />
 
             <br />
 

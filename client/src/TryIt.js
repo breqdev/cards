@@ -5,7 +5,7 @@ import CardOutput from "./CardOutput"
 
 export default function TryIt(props) {
     const [cardURL, setCardURL] = React.useState(
-        "https://cards.api.breq.dev/card/130828557977848352.html")
+        "https://cards.api.breq.dev/card/219155653160389382.html")
 
     function makeCardURL({name, bio, image, format}) {
         let url = "https://cards.api.breq.dev/card?"
