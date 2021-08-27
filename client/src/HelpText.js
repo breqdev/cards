@@ -49,7 +49,7 @@ export default function HelpText(props) {
 
             <p><strong>Can you use HTML?</strong> - Include an IFrame linking to the card.</p>
 
-            <code>{'<iframe height="300" width="500" src="https://cards.api.breq.dev/card?format=html&template=background-image&name=IFrame Card&bio=Card embedded in a webpage using an iframe.&background_image=https://breq.dev/assets/images/pansexual.png"></iframe>'}</code>
+            <code>{'<iframe height="300" width="500" src="https://cards.api.breq.dev/card?format=html&template=background-image&name=IFrame Card&bio=Card embedded in a webpage using an iframe.&background_image=https://breq.dev/opengraph/pansexual.jpg"></iframe>'}</code>
 
             <br />
 
@@ -57,7 +57,7 @@ export default function HelpText(props) {
 
             <p><strong>Otherwise, use images</strong> - Use a basic <code>{'<img>'}</code> tag, or markdown.</p>
 
-            <code>{'![](https://cards.api.breq.dev/card?format=png&template=background-image&name=Rendered Card&bio=Card rendered on the server and included as a PNG.&background_image=https://breq.dev/assets/images/pansexual.png)`'}</code>
+            <code>{'![](https://cards.api.breq.dev/card?format=png&template=background-image&name=Rendered Card&bio=Card rendered on the server and included as a PNG.&background_image=https://breq.dev/opengraph/pansexual.jpg)`'}</code>
 
             <br />
 

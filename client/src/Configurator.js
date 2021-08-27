@@ -7,7 +7,7 @@ export default function Configurator(props) {
     const [bio, setBio] = React.useState(
         "This is the description that will go on my card")
     const [image, setImage] = React.useState(
-        "https://breq.dev/assets/images/pansexual.png")
+        "https://breq.dev/opengraph/pansexual.jpg")
     const [format, setFormat] = React.useState("html")
 
     const formats = {html: ".html", png: ".png", jpg: ".jpg"}
