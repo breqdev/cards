@@ -18,6 +18,7 @@ dotenv.load_dotenv()
 
 CHROME_PATH = os.environ.get('GOOGLE_CHROME_SHIM')
 MINIO_ENDPOINT = os.environ.get("MINIO_ENDPOINT")
+MINIO_BUCKET = os.environ.get("MINIO_BUCKET", "cards")
 
 
 app = Quart(__name__)
@@ -91,7 +92,7 @@ async def card():
                 card_id = str((await response.json())["snowflake"])
 
         minio.put_object(
-            "cards",
+            MINIO_BUCKET,
             f"{card_id}.html",
             io.BytesIO(html.encode("utf-8")),
             len(html)
@@ -100,11 +101,11 @@ async def card():
         async with open_html(html) as page:
             png = await page.screenshot({"type": "png"})
             minio.put_object(
-                "cards", f"{card_id}.png", io.BytesIO(png), len(png))
+                MINIO_BUCKET, f"{card_id}.png", io.BytesIO(png), len(png))
 
             jpeg = await page.screenshot({"type": "jpeg", "quality": 100})
             minio.put_object(
-                "cards", f"{card_id}.jpeg", io.BytesIO(jpeg), len(jpeg))
+                MINIO_BUCKET, f"{card_id}.jpeg", io.BytesIO(jpeg), len(jpeg))
 
         return jsonify({
             "card_id": card_id
@@ -132,7 +133,7 @@ async def card_by_id(card_id, format):
     if format not in ["html", "png", "jpeg"]:
         return abort(404)
     return Response(
-        minio.get_object("cards", f"{card_id}.{format}").read(),
+        minio.get_object(MINIO_BUCKET, f"{card_id}.{format}").read(),
         mimetype=(
             "image/" + format if format in ["png", "jpeg"] else "text/html"
         )
