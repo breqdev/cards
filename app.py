@@ -10,26 +10,32 @@ from quart import (Quart, request, redirect, render_template, abort, Response, j
 from markupsafe import Markup
 from quart_cors import cors, route_cors
 
-from minio import Minio
+import boto3
 
 from pyppeteer import launch
 
 dotenv.load_dotenv()
 
 CHROME_PATH = os.environ.get('GOOGLE_CHROME_SHIM')
-MINIO_ENDPOINT = os.environ.get("MINIO_ENDPOINT")
-MINIO_BUCKET = os.environ.get("MINIO_BUCKET", "cards")
+
+S3_ENDPOINT = os.environ.get("S3_ENDPOINT")
+S3_BUCKET = os.environ.get("S3_BUCKET", "cards")
+S3_ACCESS_KEY = os.environ.get("S3_ACCESS_KEY")
+S3_SECRET_KEY = os.environ.get("S3_SECRET_KEY")
+
 
 
 app = Quart(__name__)
 app = cors(app)
 
 
-minio = Minio(
-    MINIO_ENDPOINT,
-    access_key=os.environ.get("MINIO_ACCESS_KEY"),
-    secret_key=os.environ.get("MINIO_SECRET_KEY"),
+s3 = boto3.client(
+    "s3",
+    endpoint_url=S3_ENDPOINT,
+    aws_access_key_id=S3_ACCESS_KEY,
+    aws_secret_access_key=S3_SECRET_KEY,
 )
+
 
 
 def markdown(text):
@@ -91,21 +97,26 @@ async def card():
             async with session.post("https://snowflake.breq.dev/") as response:
                 card_id = str((await response.json())["snowflake"])
 
-        minio.put_object(
-            MINIO_BUCKET,
-            f"{card_id}.html",
-            io.BytesIO(html.encode("utf-8")),
-            len(html)
+        s3.put_object(
+            Bucket=S3_BUCKET,
+            Key=f"{card_id}.html",
+            Body=io.BytesIO(html.encode("utf-8"))
         )
 
         async with open_html(html) as page:
             png = await page.screenshot({"type": "png"})
-            minio.put_object(
-                MINIO_BUCKET, f"{card_id}.png", io.BytesIO(png), len(png))
+            s3.put_object(
+                Bucket=S3_BUCKET,
+                Key=f"{card_id}.png",
+                Body=io.BytesIO(png)
+            )
 
             jpeg = await page.screenshot({"type": "jpeg", "quality": 100})
-            minio.put_object(
-                MINIO_BUCKET, f"{card_id}.jpeg", io.BytesIO(jpeg), len(jpeg))
+            s3.put_object(
+                Bucket=S3_BUCKET,
+                Key=f"{card_id}.jpeg",
+                Body=io.BytesIO(jpeg)
+            )
 
         return jsonify({
             "card_id": card_id
@@ -133,7 +144,11 @@ async def card_by_id(card_id, format):
     if format not in ["html", "png", "jpeg"]:
         return abort(404)
     return Response(
-        minio.get_object(MINIO_BUCKET, f"{card_id}.{format}").read(),
+        s3.get_object(
+            Bucket=S3_BUCKET,
+            Key=f"{card_id}.{format}"
+        )["Body"].read(),
+
         mimetype=(
             "image/" + format if format in ["png", "jpeg"] else "text/html"
         )
